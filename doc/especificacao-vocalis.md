@@ -18,11 +18,11 @@ Pessoas iniciantes ou curiosas sobre canto e musicalidade, sem necessidade de ex
 
 ### Plataforma e escopo
 - **Formato:** landing page de uma única página, com navegação por âncoras.
-- **Tecnologias previstas:** React e CSS Modules.
+- **Tecnologias previstas:** React, CSS Modules e Javascript.
 - **Execução:** client-side, com conteúdo estático/mockado.
 - **Integrações:** não previstas.
 - **CTA:** navegação simulada para seções da própria página.
-- **Arquitetura:** a escolha entre MVVM e FSD precisa ser confirmada conforme os modelos apresentados em aula.
+- **Arquitetura:** MVVM
 - **Repositório:** público no GitHub, conforme a atividade.
 
 ### Direção visual
