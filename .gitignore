@@ -18,3 +18,8 @@ Thumbs.db
 # Local agent/plugin state, not project source.
 /.plugins/
 /.opencode-skills/
+.playwright-mcp/
+.idea/
+playwright-report/
+test-results/
+blob-report/
