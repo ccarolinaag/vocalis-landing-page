@@ -1,0 +1,14 @@
+
+> vocalis-landing-page@1.0.0 test:e2e
+> playwright test
+
+
+Running 6 tests using 4 workers
+
+[1/6] [firefox] › tests\e2e\landing-page.spec.js:14:1 › ctas principais direcionam para a secao de modulos
+[2/6] [firefox] › tests\e2e\landing-page.spec.js:3:1 › carrega a landing page e exibe secoes principais
+[3/6] [chromium] › tests\e2e\landing-page.spec.js:14:1 › ctas principais direcionam para a secao de modulos
+[4/6] [chromium] › tests\e2e\landing-page.spec.js:3:1 › carrega a landing page e exibe secoes principais
+[5/6] [webkit] › tests\e2e\landing-page.spec.js:3:1 › carrega a landing page e exibe secoes principais
+[6/6] [webkit] › tests\e2e\landing-page.spec.js:14:1 › ctas principais direcionam para a secao de modulos
+  6 passed (24.1s)
