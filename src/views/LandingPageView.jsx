@@ -112,7 +112,6 @@ export function LandingPageView() {
                 <cite>Lucas, personagem fictício</cite>
               </blockquote>
             </div>
-            <p className={styles.disclaimer}>Depoimentos fictícios, criados para este protótipo acadêmico.</p>
           </div>
         </section>
 
