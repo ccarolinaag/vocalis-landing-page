@@ -1,10 +1,110 @@
+import { useState } from 'react'
 import { ButtonLink } from '../components/ButtonLink'
 import { SectionHeading } from '../components/SectionHeading'
 import { createLandingPageViewModel } from '../viewmodels/landingPageViewModel'
 import styles from './LandingPageView.module.css'
 
+function validateContactField(field, value) {
+  const trimmedValue = value.trim()
+
+  if (field === 'fullName') {
+    if (!trimmedValue) {
+      return 'Informe seu nome completo.'
+    }
+
+    if (trimmedValue.length < 3) {
+      return 'O nome deve ter pelo menos 3 caracteres.'
+    }
+  }
+
+  if (field === 'email') {
+    if (!trimmedValue) {
+      return 'Informe seu e-mail.'
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailPattern.test(trimmedValue)) {
+      return 'Informe um e-mail valido, como nome@dominio.com.'
+    }
+  }
+
+  if (field === 'message') {
+    if (!trimmedValue) {
+      return 'Escreva sua mensagem.'
+    }
+
+    if (trimmedValue.length < 10) {
+      return 'A mensagem deve ter pelo menos 10 caracteres.'
+    }
+  }
+
+  return ''
+}
+
+function validateContactForm(values) {
+  return {
+    fullName: validateContactField('fullName', values.fullName),
+    email: validateContactField('email', values.email),
+    message: validateContactField('message', values.message),
+  }
+}
+
 export function LandingPageView() {
   const { navigation, benefits, modules, steps, faqs } = createLandingPageViewModel()
+  const [openFaqIndex, setOpenFaqIndex] = useState(null)
+  const [contactForm, setContactForm] = useState({
+    fullName: '',
+    email: '',
+    message: '',
+  })
+  const [contactErrors, setContactErrors] = useState({
+    fullName: '',
+    email: '',
+    message: '',
+  })
+  const [contactSuccessMessage, setContactSuccessMessage] = useState('')
+
+  const handleFaqToggle = (index) => {
+    setOpenFaqIndex((currentIndex) => (currentIndex === index ? null : index))
+  }
+
+  const handleContactChange = (event) => {
+    const { name, value } = event.target
+
+    setContactForm((currentForm) => ({
+      ...currentForm,
+      [name]: value,
+    }))
+
+    setContactErrors((currentErrors) => ({
+      ...currentErrors,
+      [name]: validateContactField(name, value),
+    }))
+
+    if (contactSuccessMessage) {
+      setContactSuccessMessage('')
+    }
+  }
+
+  const handleContactSubmit = (event) => {
+    event.preventDefault()
+
+    const nextErrors = validateContactForm(contactForm)
+    const hasErrors = Object.values(nextErrors).some(Boolean)
+
+    setContactErrors(nextErrors)
+
+    if (hasErrors) {
+      return
+    }
+
+    setContactSuccessMessage('Mensagem enviada com sucesso! Em breve entraremos em contato.')
+    setContactForm({
+      fullName: '',
+      email: '',
+      message: '',
+    })
+  }
 
   return (
     <>
@@ -129,13 +229,113 @@ export function LandingPageView() {
         <section id="duvidas" className={`${styles.section} ${styles.faqSection} ${styles.container}`}>
           <SectionHeading eyebrow="FAQ" title="Dúvidas frequentes" align="left" />
           <div className={styles.faqList}>
-            {faqs.map((faq) => (
-              <article key={faq.question}>
-                <h3>{faq.question}</h3>
-                <p>{faq.answer}</p>
-              </article>
-            ))}
+            {faqs.map((faq, index) => {
+              const isOpen = openFaqIndex === index
+              const questionId = `faq-question-${index}`
+              const panelId = `faq-panel-${index}`
+
+              return (
+                <article key={faq.question} className={styles.faqItem}>
+                  <h3>
+                    <button
+                      id={questionId}
+                      type="button"
+                      className={styles.faqButton}
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onClick={() => handleFaqToggle(index)}
+                    >
+                      {faq.question}
+                      <span className={styles.faqButtonIcon} aria-hidden="true">▾</span>
+                    </button>
+                  </h3>
+                  <div
+                    id={panelId}
+                    className={styles.faqPanel}
+                    role="region"
+                    aria-labelledby={questionId}
+                    hidden={!isOpen}
+                  >
+                    <p>{faq.answer}</p>
+                  </div>
+                </article>
+              )
+            })}
           </div>
+        </section>
+
+        <section id="contato" className={`${styles.section} ${styles.container}`}>
+          <SectionHeading
+            eyebrow="Contato acadêmico"
+            title="Envie sua dúvida sobre o protótipo"
+            description="Este formulário é apenas demonstrativo e não envia dados para um servidor."
+            align="left"
+          />
+          <form className={styles.contactForm} onSubmit={handleContactSubmit} noValidate>
+            <div className={styles.formField}>
+              <label htmlFor="fullName">Nome completo</label>
+              <input
+                id="fullName"
+                name="fullName"
+                type="text"
+                value={contactForm.fullName}
+                onChange={handleContactChange}
+                className={styles.contactInput}
+                aria-invalid={Boolean(contactErrors.fullName)}
+                aria-describedby={contactErrors.fullName ? 'fullName-error' : undefined}
+              />
+              {contactErrors.fullName && (
+                <p id="fullName-error" className={styles.formError}>
+                  {contactErrors.fullName}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.formField}>
+              <label htmlFor="email">E-mail</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={contactForm.email}
+                onChange={handleContactChange}
+                className={styles.contactInput}
+                aria-invalid={Boolean(contactErrors.email)}
+                aria-describedby={contactErrors.email ? 'email-error' : undefined}
+              />
+              {contactErrors.email && (
+                <p id="email-error" className={styles.formError}>
+                  {contactErrors.email}
+                </p>
+              )}
+            </div>
+
+            <div className={styles.formField}>
+              <label htmlFor="message">Mensagem</label>
+              <textarea
+                id="message"
+                name="message"
+                value={contactForm.message}
+                onChange={handleContactChange}
+                className={`${styles.contactInput} ${styles.contactTextarea}`}
+                aria-invalid={Boolean(contactErrors.message)}
+                aria-describedby={contactErrors.message ? 'message-error' : undefined}
+              />
+              {contactErrors.message && (
+                <p id="message-error" className={styles.formError}>
+                  {contactErrors.message}
+                </p>
+              )}
+            </div>
+
+            <button type="submit" className={styles.contactButton}>Enviar mensagem</button>
+
+            {contactSuccessMessage && (
+              <p className={styles.formSuccess} role="status" aria-live="polite">
+                {contactSuccessMessage}
+              </p>
+            )}
+          </form>
         </section>
 
         <section className={styles.finalCta}>

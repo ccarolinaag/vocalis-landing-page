@@ -63,6 +63,7 @@ A página foi planejada para apresentar o produto em uma sequência de seções 
 | **Depoimentos ilustrativos** | Exemplos fictícios de experiências de usuários. |
 | **Oferta introdutória** | Apresentação de um plano fictício gratuito. |
 | **Perguntas frequentes** | Esclarecimento de dúvidas sobre a proposta do produto. |
+| **Contato acadêmico** | Formulário local com validação de nome, e-mail e mensagem. |
 | **Chamada final e rodapé** | Reforço da identidade do Vocalis e convite para conhecer a solução. |
 
 ## 💻 Tecnologias utilizadas
@@ -161,6 +162,46 @@ A validação do projeto considera os seguintes critérios:
 - [x] Execução correta da aplicação.
 - [x] Organização e legibilidade do código.
 - [x] Coerência entre a implementação e a arquitetura documentada.
+
+Verificação executada nesta etapa:
+
+- `npm run build` (Vite build finalizado com sucesso).
+
+### ✅ Critérios de aceite validados
+
+#### FAQ em acordeão
+
+- [x] Seção de dúvidas implementada em formato de acordeão.
+- [x] Perguntas implementadas como botões clicáveis e acessíveis por teclado.
+- [x] Clique em pergunta fechada abre a resposta correspondente.
+- [x] Clique na mesma pergunta aberta fecha a resposta.
+- [x] Apenas uma resposta permanece aberta por vez.
+- [x] Estado inicial com todas as respostas fechadas.
+- [x] `aria-expanded` atualizado corretamente em cada interação.
+- [x] `aria-controls` ligado ao painel correto de cada pergunta.
+- [x] Painéis com `id` único e relação de acessibilidade correta com o botão (`aria-labelledby`).
+- [x] Navegação por teclado validada (Tab + Espaço/Enter).
+- [x] Comportamento visual estável com textos maiores.
+
+#### Formulário de contato acadêmico
+
+- [x] Campos obrigatórios implementados: nome completo, e-mail e mensagem.
+- [x] Validação de nome (obrigatório, mínimo de 3 caracteres).
+- [x] Validação de e-mail (obrigatório e formato válido).
+- [x] Validação de mensagem (obrigatória, mínimo de 10 caracteres).
+- [x] Envio com erros bloqueado e com mensagens específicas abaixo dos campos inválidos.
+- [x] Erro removido quando o campo é corrigido.
+- [x] Envio válido com mensagem de sucesso visível.
+- [x] Envio sem recarregar a página.
+- [x] Campos limpos após envio válido.
+- [x] Ação local (sem backend e sem requisição HTTP).
+- [x] Comportamento estável em telas pequenas, sem sobreposição ou corte.
+
+#### Verificações realizadas
+
+- [x] Build de produção: `npm run build`.
+- [x] Testes funcionais com Playwright para comportamento do FAQ e do formulário.
+- [x] Checagem de ausência de overflow horizontal em 390 px, 820 px e 1366 px.
 
 
 
